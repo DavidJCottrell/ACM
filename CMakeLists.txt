@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-project(Sentinel VERSION 0.0.1 LANGUAGES C CXX)
+project(ccm VERSION 0.0.1 LANGUAGES C CXX)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)

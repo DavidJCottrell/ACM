@@ -13,6 +13,7 @@ add_library(${PROJECT_NAME} STATIC
         src/ConfigurationManager.cpp
         src/FileReader.cpp
         src/SentinelFileReader.cpp
+        src/ConfigType.h
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC

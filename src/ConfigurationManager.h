@@ -1,43 +1,38 @@
 #pragma once
 
 #include <functional>
-#include <memory>
-#include "FileReader.h"
-#include "FileReaderTypes.h"
 
-namespace Sentinel
+#include "ConfigType.h"
+#include "FileReader.h"
+
+namespace ACM
 {
     struct ConfigurationParameters
     {
         bool enableHotReload = true;
         bool validateOnLoad = true;
-        FileReaderType fileReaderType = SENTINEL;
     };
 
     class ConfigurationManager
     {
     public:
-        // Initialising and getting
-        static ConfigurationManager *Get();
-        static void Initialize(const char *filePath, const ConfigurationParameters &params = ConfigurationParameters());
+        static ConfigurationManager* Get();
+        static void Initialize(const std::string&, const ConfigurationParameters& params = ConfigurationParameters());
 
-        // Destruction
         ~ConfigurationManager();
         static void Destroy();
 
-        int GetConfigValue() const { return m_ConfigValue; }
+        [[nodiscard]] int GetConfigValue();
 
     private:
-        // Methods
-        ConfigurationManager(const char *filePath, const ConfigurationParameters &params);
+        ConfigurationManager(std::string, FileReaderType type, const ConfigurationParameters& params);
 
-        // Properties
-        static ConfigurationManager *m_Instance;
-        std::unique_ptr<FileReader> m_reader;
+        static ConfigurationManager* m_Instance;
+        std::unique_ptr<FileReader> m_Reader;
 
-        const char *m_FilePath;
+        std::string m_FilePath{};
         ConfigurationParameters m_Parameters;
 
-        int m_ConfigValue;
+        int m_ConfigValue{};
     };
 }

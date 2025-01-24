@@ -1,10 +1,10 @@
 #include "FileReader.h"
 
-#include <cstdio>
 #include "SentinelFileReader.h"
 #include <filesystem>
+#include <iostream>
 
-namespace Sentinel
+namespace ACM
 {
     FileReader::FileReader() = default;
     FileReader::~FileReader() = default;
@@ -14,25 +14,21 @@ namespace Sentinel
         switch (type)
         {
         case SENTINEL:
-            printf("Sentinel file");
             return new SentinelFileReader();
         case JSON:
-            printf("JSON file");
-            break;
         case YAML:
-            printf("YAML file");
-            break;
         case TOML:
-            printf("TOML file");
             break;
         }
+
+        std::cerr << "FileReader::Create: Unknown FileReaderType" << std::endl;
 
         return nullptr;
     }
 
     std::string FileReader::GetCurrentDirectory()
     {
-        std::filesystem::path cwd = std::filesystem::current_path();
+        const std::filesystem::path cwd = std::filesystem::current_path();
         return cwd.string();
     }
 }

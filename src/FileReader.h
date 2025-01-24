@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
+#include "ConfigType.h"
 
-#include "FileReaderTypes.h"
-
-namespace Sentinel
+namespace ACM
 {
   class FileReader
   {
@@ -17,5 +16,8 @@ namespace Sentinel
     static std::string GetCurrentDirectory();
 
     virtual int Read(std::string filePath) = 0;
+
+    // Maybe this needs to be templated?
+    virtual void ParseConfiguration(std::vector<std::string>& lines) = 0;
   };
 }

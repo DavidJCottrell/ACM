@@ -1,50 +1,61 @@
 #include "ConfigurationManager.h"
-#include <stdexcept>
+
+#include <iostream>
+#include <ostream>
+#include "ConfigType.h"
 
 #include "SentinelFileReader.h"
 
-namespace Sentinel
+namespace ACM
 {
-    ConfigurationManager *ConfigurationManager::m_Instance = nullptr;
+    ConfigurationManager* ConfigurationManager::m_Instance = nullptr;
 
-    ConfigurationManager *ConfigurationManager::Get()
+    ConfigurationManager* ConfigurationManager::Get()
     {
         if (!m_Instance)
         {
-            throw std::runtime_error("ConfigurationManager not initialized");
+            std::cerr << "Error: ConfigurationManager not initialized" << std::endl;
         }
         return m_Instance;
     }
 
-    void ConfigurationManager::Initialize(const char *filePath, const ConfigurationParameters &params)
+    void ConfigurationManager::Initialize(const std::string& filePath, const ConfigurationParameters& params)
     {
         if (m_Instance)
         {
-            throw std::runtime_error("ConfigurationManager already initialized");
+            std::cerr << "Error: The ConfigurationManager has already been initialized" << std::endl;
+            return;
         }
-        m_Instance = new ConfigurationManager(filePath, params);
 
-        m_Instance->m_reader = std::unique_ptr<FileReader>(FileReader::Create(params.fileReaderType));
+        const std::string fileExtension = filePath.substr(
+            filePath.find('.') + 1,
+            filePath.length() - filePath.find('.')
+        );
 
-        m_Instance->m_ConfigValue = m_Instance->m_reader->Read(m_Instance->m_FilePath);
-    }
-
-    void ConfigurationManager::Destroy()
-    {
-        delete m_Instance;
-        m_Instance = nullptr;
-    }
-
-    ConfigurationManager::ConfigurationManager(const char *filePath, const ConfigurationParameters &params)
-        : m_FilePath(filePath), m_Parameters(params)
-    {
-    }
-
-    ConfigurationManager::~ConfigurationManager()
-    {
-        if (this == m_Instance)
+        if (!fileTypeMap.contains(fileExtension))
         {
-            m_Instance = nullptr;
+            std::cerr << "'" << fileExtension << "' file extension is not supported." << std::endl;
+            return;
         }
+
+        const FileReaderType type = fileTypeMap.at(fileExtension);
+
+        m_Instance = new ConfigurationManager(filePath, type, params);
+    }
+
+    int ConfigurationManager::GetConfigValue()
+    {
+        if (!m_Instance)
+            return -1;
+
+        return m_Instance->m_Reader->Read(m_Instance->m_FilePath);
+    }
+
+    ConfigurationManager::ConfigurationManager(std::string filePath, const FileReaderType type,
+                                               const ConfigurationParameters& params)
+        : m_Reader(std::unique_ptr<FileReader>(FileReader::Create(type))),
+          m_FilePath(std::move(filePath)),
+          m_Parameters(params)
+    {
     }
 }

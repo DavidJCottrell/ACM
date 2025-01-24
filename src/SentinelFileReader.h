@@ -2,7 +2,7 @@
 
 #include "FileReader.h"
 
-namespace Sentinel
+namespace ACM
 {
     class SentinelFileReader final : public FileReader
     {
@@ -10,5 +10,6 @@ namespace Sentinel
         SentinelFileReader();
         ~SentinelFileReader() override;
         int Read(std::string filePath) override;
+        void ParseConfiguration(std::vector<std::string>& lines) override;
     };
 }

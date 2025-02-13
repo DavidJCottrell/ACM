@@ -1,6 +1,6 @@
 #pragma once
 
-#include <functional>
+#include <memory>
 
 #include "ConfigType.h"
 #include "FileReader.h"

@@ -9,7 +9,7 @@ namespace ACM
     FileReader::FileReader() = default;
     FileReader::~FileReader() = default;
 
-    FileReader* FileReader::Create(const FileReaderType type)
+    FileReader *FileReader::Create(const FileReaderType type)
     {
         switch (type)
         {
@@ -32,5 +32,3 @@ namespace ACM
         return cwd.string();
     }
 }
-
-

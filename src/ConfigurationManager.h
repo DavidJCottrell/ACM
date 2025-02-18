@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 
 #include "ConfigType.h"
@@ -16,8 +17,8 @@ namespace ACM
     class ConfigurationManager
     {
     public:
-        static ConfigurationManager* Get();
-        static void Initialize(const std::string&, const ConfigurationParameters& params = ConfigurationParameters());
+        static ConfigurationManager *Get();
+        static void Initialize(const std::string &, const ConfigurationParameters &params = ConfigurationParameters());
 
         ~ConfigurationManager();
         static void Destroy();
@@ -25,9 +26,9 @@ namespace ACM
         [[nodiscard]] int GetConfigValue();
 
     private:
-        ConfigurationManager(std::string, FileReaderType type, const ConfigurationParameters& params);
+        ConfigurationManager(std::string, FileReaderType type, const ConfigurationParameters &params);
 
-        static ConfigurationManager* m_Instance;
+        static ConfigurationManager *m_Instance;
         std::unique_ptr<FileReader> m_Reader;
 
         std::string m_FilePath{};
